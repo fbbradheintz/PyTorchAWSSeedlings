@@ -122,10 +122,21 @@ def train(model, epochs, lr, model_dir, device):
             if accuracy >= best_accuracy:
                 tlog( '  New accuracy peak, saving model')
                 best_accuracy = accuracy
-                saved_model_filename = save_model(model, epoch + 1, model_dir)
+                saved_model_filename = save_model(model, model_dir)
                 
     return (saved_model_filename, best_accuracy)
 
+
+# This is a SageMaker entry point to instantiate the 
+def model_fn(model_dir):
+    model = SeedlingModelV1_1()
+    with open(os.path.join(model_dir, 'model.pt'), 'rb') as f:
+        model.load_state_dict(torch.load(f))
+    return model
+
+
+def predict_fn(input_object, model):
+    return model(input_object)
 
 
 if __name__ == '__main__':
