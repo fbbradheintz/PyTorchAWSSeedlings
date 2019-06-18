@@ -21,9 +21,9 @@ def tlog(msg):
     print('{}   {}'.format(time.asctime(), msg))
 
 
-def save_model(model, epoch, model_dir):
+def save_model(model, model_dir):
     tlog('Saving model')
-    savefile = "{}-e{}-{}.pt".format(MODEL_SAVEFILE, epoch, int(time.time()))
+    savefile = 'model.pt'
     path = os.path.join(model_dir, savefile)
     # recommended way from https://pytorch.org/docs/stable/notes/serialization.html
     torch.save(model.state_dict(), path)
@@ -161,4 +161,5 @@ if __name__ == '__main__':
     validate_loader = torch.utils.data.DataLoader(validate_dataset, batch_size=1)
 
     model_1_1 = SeedlingModelV1_1()
-    best_model_1_1, acc_1_1 = train(model_1_1, args.epochs, args.learning_rate, args.output_data_dir, dev)
+    best_model_1_1, acc_1_1 = train(model_1_1, args.epochs, args.learning_rate, args.model_dir, dev)
+    
