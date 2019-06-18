@@ -131,11 +131,12 @@ def train(model, epochs, lr, model_dir, device):
 def model_fn(model_dir):
     model = SeedlingModelV1_1()
     with open(os.path.join(model_dir, 'model.pt'), 'rb') as f:
-        model.load_state_dict(torch.load(f))
+        model.load_state_dict(torch.load(f, map_location=torch.device('cpu')))
     return model
 
 
 def predict_fn(input_object, model):
+    model.eval()
     return model(input_object)
 
 
