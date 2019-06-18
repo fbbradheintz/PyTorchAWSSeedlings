@@ -127,13 +127,11 @@ def train(model, epochs, lr, model_dir, device):
     return (saved_model_filename, best_accuracy)
 
 
-# This is a SageMaker entry point to instantiate the 
 def model_fn(model_dir):
     model = SeedlingModelV1_1()
     with open(os.path.join(model_dir, 'model.pt'), 'rb') as f:
         model.load_state_dict(torch.load(f, map_location=torch.device('cpu')))
     return model
-
 
 def predict_fn(input_object, model):
     model.eval()
